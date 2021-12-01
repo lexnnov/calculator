@@ -23,7 +23,7 @@
       font-style: normal;
       font-weight: 600;
       color: #353535;
-      font-size: 33px;
+      font-size: 24px;
     }
 
     &__content {
