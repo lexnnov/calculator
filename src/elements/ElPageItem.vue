@@ -15,7 +15,7 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .el-page-item {
 
     &__title {
@@ -27,7 +27,8 @@
     }
 
     &__content {
-      padding: 30px;
+      margin-top: 10px;
+      padding: 46px 30px;
       display: flex;
       flex-direction: column;
       border: 1px solid #F2F2F2;

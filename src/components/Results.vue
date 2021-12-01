@@ -1,6 +1,6 @@
 <template>
   <div class="el-results">
-    <div v-if="expressions.length > 0">
+    <div v-if="isExpressions">
       <div :key="fractions.id" class="el-results__item" v-for="fractions in expressions">
 
         <div class="el-results__item-expression">
@@ -20,9 +20,9 @@
             <img src="../assets/equal.svg">
         </span>
 
-          <fraction :data="fractions.result" disabled state="view"/>
+          <div v-if="!fractions.result"> ? </div>
+          <fraction v-else :data="fractions.result" disabled state="view"/>
         </div>
-
 
         <el-button @click="removeFractionFromSaved(fractions.id)" class="el-results__item-remove" dashed>
           Удалить
@@ -31,7 +31,7 @@
       </div>
     </div>
 
-    <div v-else>Тут будут расчеты</div>
+    <div class="el-results__empty" v-else>Тут будут расчеты</div>
   </div>
 </template>
 
@@ -42,7 +42,23 @@
   export default {
     name: "Results",
     components: {ElButton, Fraction},
-    props: ['expressions', 'results'],
+    props: {
+      expressions: {
+        type: Array,
+        default(){
+          return []
+        }
+      },
+      isIncorrectExpression: {
+        type: Boolean,
+        default: false
+      }
+    },
+    computed: {
+      isExpressions() {
+        return this.expressions.length > 0
+      }
+    },
     methods: {
       removeFractionFromSaved(val) {
         this.$emit('removeExpression', val)
@@ -51,7 +67,7 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .el-results {
 
     &__item {
@@ -75,6 +91,16 @@
     &__fraction {
       display: flex;
       align-items: center
+    }
+
+    &__empty {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 50px;
+      color: #9D9C9C;
+      font-size: 16px;
+      font-weight: normal;
     }
 
   }
