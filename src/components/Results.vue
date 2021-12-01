@@ -20,7 +20,10 @@
             <img src="../assets/equal.svg">
         </span>
 
-          <div v-if="!fractions.result"> ? </div>
+          <span v-if="!fractions.result">
+            <img src="../assets/question.svg">
+          </span>
+
           <fraction v-else :data="fractions.result" disabled state="view"/>
         </div>
 
