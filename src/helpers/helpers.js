@@ -3,7 +3,6 @@ function gcd(a, b) {
 }
 export function decimalToFraction (_decimal) {
   if (_decimal == parseInt(_decimal)) {
-    console.log(_decimal)
 
     return {
       left: parseInt(_decimal),
@@ -13,13 +12,10 @@ export function decimalToFraction (_decimal) {
     };
   }
   else {
-    console.log(_decimal)
-
     let top = _decimal.toString().includes(".") ? _decimal.toString().replace(/\d+[.]/, '') : 0;
     let bottom = Math.pow(10, top.toString().replace('-','').length);
     let left = _decimal.toString().includes(".") ? _decimal.toString().substring(0,_decimal.toString().indexOf(".")) : 0;
 
-    console.log(left)
     if (_decimal >= 1) {
       top = +top;
     }
