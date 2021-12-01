@@ -1,5 +1,8 @@
 # calculate
 
+## Project live
+https://lexnnov.github.io/calculator/
+
 ## Project setup
 ```
 npm install
