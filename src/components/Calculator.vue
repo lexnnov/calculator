@@ -13,7 +13,11 @@
         <span class="el-calculator__equal-icon" >
           <img src="../assets/equal.svg">
         </span>
-        <div v-if="isIncorrectExpression">?</div>
+
+        <span v-if="isIncorrectExpression">
+          <img src="../assets/question.svg">
+        </span>
+
         <fraction v-else :data="resultExpression" :removable="false"  state="view" disabled/>
       </div>
 

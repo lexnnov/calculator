@@ -128,12 +128,15 @@
     font-family: 'Open Sans';
   }
 
+  span {
+    line-height: 0;
+  }
+
   #app {
     padding: 50px;
   }
 
   .el-page {
-
     &__item {
       margin-top: 20px;
     }
