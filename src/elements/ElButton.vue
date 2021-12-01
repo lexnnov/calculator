@@ -1,5 +1,5 @@
 <template>
-  <button class="el-button" :class="{'el-button--dashed': dashed}">
+  <button class="el-button" :class="{'el-button--dashed': dashed}" :disabled="disabled">
     <slot></slot>
   </button>
 </template>
@@ -9,6 +9,10 @@
     name: "ElButton",
     props: {
       dashed: {
+        type: Boolean,
+        default: false
+      },
+      disabled: {
         type: Boolean,
         default: false
       }
@@ -26,6 +30,7 @@
     color: white;
     cursor: pointer;
     width: content-box;
+    font-size: 16px;
 
     &:hover {
       background: #F88D20;

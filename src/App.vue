@@ -5,11 +5,12 @@
 
       <calculator
           :fractions="fractions"
-          :results="results"
+          :isIncorrectExpression="isIncorrectExpression"
+          :resultExpression="resultExpression"
           @addFraction="addFraction"
           @removeFraction="removeFraction"
-          @saveFractions="saveFractions"
-          @updateFraction="update"
+          @saveExpression="saveExpression"
+          @updateFraction="updateFraction"
       />
     </el-page-item>
 
@@ -18,6 +19,7 @@
 
       <results
           :expressions="expressions"
+          :isIncorrectExpression="isIncorrectExpression"
           @removeExpression="removeExpression"
       />
     </el-page-item>
@@ -56,14 +58,17 @@
       ElPageItem,
     },
     computed: {
-
-      results() {
-        let summ = this.fractions.reduce(function (total, fraction) {
-          if (fraction.denominator == 0) {
+      isIncorrectExpression() {
+        return this.fractions.some(el => !Number(el.denominator) || !Number(el.numerator))
+      },
+      resultExpression() {
+        const summ = this.fractions.reduce(function (total, fraction) {
+          if (!fraction.denominator) {
             return total;
           }
-          return total + (fraction.numerator / fraction.denominator)
-        }, 0).toFixed(2) * 1;
+          return total + (Number(fraction.numerator) / Number(fraction.denominator))
+        }, 0).toFixed(2);
+
         return {
           numerator: decimalToFraction(summ).top,
           denominator: decimalToFraction(summ).bottom,
@@ -78,34 +83,35 @@
         }
         this.fractions = [...this.fractions, {id: new Date(), numerator: '', denominator: ''}]
       },
-      saveFractions() {
-        this.expressions = [...this.expressions, {
-          id: new Date(),
-          fractions: [...this.fractions],
-          result: {...this.results}
-        }]
-
-        localStorage.expressions = JSON.stringify(this.expressions);
-      },
-      removeFraction(val) {
-        this.fractions = this.fractions.filter(el => {
-          return el.id != val
-        })
-      },
-      removeExpression(val) {
-        this.expressions = this.expressions.filter(el => {
-          return el.id != val
-        })
-
-        localStorage.expressions = JSON.stringify(this.expressions)
-      },
-      update(val) {
+      updateFraction(val) {
         this.fractions = this.fractions.map(el => {
           if (el.id == val.id) {
             el = {...el, ...val}
           }
           return el
         })
+      },
+      removeFraction(fractionId) {
+        this.fractions = this.fractions.filter(fraction => {
+          return fraction.id != fractionId
+        })
+      },
+
+      saveExpression() {
+        this.expressions = [...this.expressions, {
+          id: new Date(),
+          fractions: [...this.fractions],
+          result: this.isIncorrectExpression ? null : {...this.resultExpression}
+        }]
+
+        localStorage.expressions = JSON.stringify(this.expressions);
+      },
+      removeExpression(expressionId) {
+        this.expressions = this.expressions.filter(expression => {
+          return expression.id != expressionId
+        })
+
+        localStorage.expressions = JSON.stringify(this.expressions)
       }
     },
     mounted() {
@@ -115,10 +121,11 @@
 </script>
 
 <style lang="scss">
-  @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;600&display=swap');
 
   * {
     box-sizing: border-box;
+    font-family: 'Open Sans';
   }
 
   #app {

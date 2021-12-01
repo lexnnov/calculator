@@ -53,6 +53,7 @@
     padding: 13px;
     outline: none;
     text-align: center;
+    font-size: 16px;
 
     &:hover {
       border: 1px solid #9D9C9C;

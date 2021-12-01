@@ -7,17 +7,17 @@
     </div>
 
     <div class="el-fraction__body">
-      <div class="el-fraction__left" v-if="this.data.dec > 0">
+
+      <div class="el-fraction__left" v-if="isShowDec">
         {{this.data.dec}}
       </div>
+
       <div class="el-fraction__right" v-if="isShowFraction">
-        <el-input :disabled="disabled" :value="numerator" @update="updateDenominator" placeholder="00"></el-input>
+        <el-input :disabled="disabled" :value="numerator" @update="updateNumerator" placeholder="00"></el-input>
         <hr class="el-fraction__delimiter">
-        <el-input :disabled="disabled" :value="denominator" @update="updateDivider" placeholder="00"></el-input>
+        <el-input :disabled="disabled" :value="denominator" @update="updateDenominator" placeholder="00"></el-input>
       </div>
-      <div v-else>
-        ?
-      </div>
+
     </div>
   </div>
 </template>
@@ -34,9 +34,9 @@
         default() {
           return {
             id: 0,
+            dec: 0,
             numerator: 0,
             denominator: 0,
-            dec: 0
           }
         }
       },
@@ -60,8 +60,11 @@
       }
     },
     computed: {
+      isShowDec() {
+        return this.data.dec > 0
+      },
       isShowFraction() {
-        return (this.state == 'view' && this.denominator > 1) || this.state == 'edit'
+        return (this.state === 'view' && this.denominator > 1) || this.state === 'edit'
       },
       numerator() {
         return this.data.numerator
@@ -71,20 +74,20 @@
       }
     },
     methods: {
-      updateDenominator(val) {
-        this.$emit('update', {id: this.data.id, numerator: val})
+      updateNumerator(val) {
+        this.$emit('updateFraction', {id: this.data.id, numerator: val})
       },
-      updateDivider(val) {
-        this.$emit('update', {id: this.data.id, denominator: val})
+      updateDenominator(val) {
+        this.$emit('updateFraction', {id: this.data.id, denominator: val})
       },
       removeFraction() {
-        this.$emit('remove', this.data.id)
+        this.$emit('removeFraction', this.data.id)
       }
     }
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .el-fraction {
     display: flex;
     width: 60px;
@@ -112,7 +115,7 @@
       cursor: pointer;
       position: absolute;
       right: 0;
-      top: -20px;
+      top: -25px;
     }
 
     &__delimiter {
